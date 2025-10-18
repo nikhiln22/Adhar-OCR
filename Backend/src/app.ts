@@ -1,19 +1,21 @@
 import express, { Express } from "express";
 import cors from "cors";
 import { createServer, Server as HttpServer } from "http";
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { IApp } from "./interfaces/Iapp";
 import { config } from "./config/env.config";
+import { OcrRoutes } from "./routes/aadharOcr.routes";
 
 @injectable()
 export class App implements IApp {
   public app: Express;
   public server: HttpServer;
 
-  constructor() {
+  constructor(@inject(OcrRoutes) private ocrRoutes: OcrRoutes) {
     this.app = express();
     this.server = createServer(this.app);
     this.setUpMiddlewares();
+    this.configureRoutes();
   }
 
   private setUpMiddlewares(): void {
@@ -24,6 +26,10 @@ export class App implements IApp {
 
     this.app.use(cors(corsOptions));
     this.app.use(express.json());
+  }
+
+  private configureRoutes() {
+    this.app.use("/api/ocr", this.ocrRoutes.getRouter());
   }
 
   public getServer(): HttpServer {

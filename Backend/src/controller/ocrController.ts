@@ -5,13 +5,17 @@ import { HttpStatusCodes } from "../utils/httpStatusCode";
 
 @injectable()
 export class OcrController {
-  constructor(@inject("IOcrService") private _ocrService: IAadharOcrService) {}
+  constructor(
+    @inject("IAadharOcrService") private _ocrService: IAadharOcrService
+  ) {}
 
-  async saveData(req: Request, res: Response): Promise<void> {
+  async processAadhar(req: Request, res: Response): Promise<void> {
     try {
       console.log("Entered OCR Controller to parse Aadhaar data");
 
       const files = req.files as Express.Multer.File[];
+
+      console.log("files in the controller:", files);
 
       if (!files || files.length < 2) {
         res.status(HttpStatusCodes.BAD_REQUEST).json({
@@ -23,6 +27,7 @@ export class OcrController {
       }
 
       const response = await this._ocrService.addAadhar(files);
+      console.log("response in the controller function");
 
       res.status(HttpStatusCodes.OK).json(response);
     } catch (error) {

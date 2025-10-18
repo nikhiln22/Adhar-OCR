@@ -2,9 +2,13 @@ import { Model } from "mongoose";
 import { IAddAadharRequestDto } from "../interfaces/Dto/OcrService";
 import { IAdharModel } from "../interfaces/IadharModel";
 import { IAadharOcrRepository } from "../interfaces/IocrRepository";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class AadharOcrRepository implements IAadharOcrRepository {
-  constructor(private _aadharModel: Model<IAdharModel>) {}
+  constructor(
+    @inject("IAdharModel") private _aadharModel: Model<IAdharModel>
+  ) {}
 
   async addAadhar(data: IAddAadharRequestDto): Promise<IAdharModel | null> {
     try {
