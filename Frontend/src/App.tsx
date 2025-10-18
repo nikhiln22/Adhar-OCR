@@ -1,9 +1,14 @@
-import "./App.css";
+import { AadhaarOCRPage } from "./pages/AadharOcrPage";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <h1>Adhar OCR Application is here</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AadhaarOCRPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
