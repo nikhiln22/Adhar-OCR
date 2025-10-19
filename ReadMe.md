@@ -3,7 +3,7 @@
 OCR Live is a full-stack application that allows users to upload images and extract text in real-time using Optical Character Recognition (OCR). The project provides a fast, user-friendly frontend and a robust backend capable of handling image processing efficiently.
 
 ## Live Demo
-- **Access the live Demo of Project on:** [https://your-frontend-vercel-url]
+- **Access the live Demo of Project on:** [https://adhar-ocr.vercel.app/]
 
 
 ## Features
