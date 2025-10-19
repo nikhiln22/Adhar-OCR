@@ -8,22 +8,22 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Node modules
-/frontend/node_modules
-/backend/node_modules
+/Frontend/node_modules
+/Backend/node_modules
 
 # Build and output directories
-/frontend/dist
-/frontend/dist-ssr
-/backend/dist
+/Frontend/dist
+/Frontend/dist-ssr
+/Backend/dist
 
 # Environment and local files
 *.local
-/frontend/.env
-/backend/.env
+/Frontend/.env
+/Backend/.env
 .env
 
 # Uploaded files
-/backend/src/uploads/
+/Backend/uploads/
 
 # System and Editor settings
 .vscode/*
