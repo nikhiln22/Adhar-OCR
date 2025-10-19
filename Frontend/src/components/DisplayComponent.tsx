@@ -1,5 +1,4 @@
 import React from "react";
-import type { IAadhar } from "../Model/aadhar";
 import {
   CheckCircle,
   FileText,
@@ -8,17 +7,10 @@ import {
   CreditCard,
   MapPin,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-
-interface DisplayComponentProps {
-  ocrData: IAadhar | null;
-}
-
-interface DetailRowProps {
-  label: string;
-  value: string;
-  icon: LucideIcon;
-}
+import type {
+  DisplayComponentProps,
+  DetailRowProps,
+} from "../types/component.types";
 
 export const DisplayComponent: React.FC<DisplayComponentProps> = ({
   ocrData,

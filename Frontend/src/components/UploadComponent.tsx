@@ -1,22 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Upload, CheckCircle, Scan, Image } from "lucide-react";
-
-interface UploadComponentProps {
-  frontImage: File | null;
-  setFrontImage: (file: File | null) => void;
-  backImage: File | null;
-  setBackImage: (file: File | null) => void;
-  handleProcessOCR: () => void;
-  loading: boolean;
-}
-
-interface ImageUploadCardProps {
-  label: string;
-  preview: string | null;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  id: string;
-  side: "front" | "back";
-}
+import { Upload, Scan, Image, X } from "lucide-react";
+import type {
+  UploadComponentProps,
+  ImageUploadCardProps,
+} from "../types/component.types";
 
 export const UploadComponent: React.FC<UploadComponentProps> = ({
   frontImage,
@@ -31,9 +18,13 @@ export const UploadComponent: React.FC<UploadComponentProps> = ({
 
   useEffect(() => {
     if (frontImage) {
-      const objectUrl = URL.createObjectURL(frontImage);
-      setFrontPreview(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setFrontPreview(e.target.result as string);
+        }
+      };
+      reader.readAsDataURL(frontImage);
     } else {
       setFrontPreview(null);
     }
@@ -41,10 +32,13 @@ export const UploadComponent: React.FC<UploadComponentProps> = ({
 
   useEffect(() => {
     if (backImage) {
-      const objectUrl = URL.createObjectURL(backImage);
-      setBackPreview(objectUrl);
-
-      return () => URL.revokeObjectURL(objectUrl);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setBackPreview(e.target.result as string);
+        }
+      };
+      reader.readAsDataURL(backImage);
     } else {
       setBackPreview(null);
     }
@@ -54,6 +48,7 @@ export const UploadComponent: React.FC<UploadComponentProps> = ({
     label,
     preview,
     onChange,
+    onRemove,
     id,
     side,
   }) => (
@@ -97,20 +92,24 @@ export const UploadComponent: React.FC<UploadComponentProps> = ({
           />
         </label>
       ) : (
-        <div className="relative group">
-          <img
-            src={preview}
-            alt={`${label} Preview`}
-            className="w-full h-48 object-cover rounded-lg border-2 border-gray-200"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 rounded-lg flex items-center justify-center">
-            <label
-              htmlFor={id}
-              className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer bg-white text-gray-800 px-4 py-2 rounded-lg font-medium hover:bg-gray-100"
-            >
-              Change Image
-            </label>
+        <div className="relative">
+          <div className="w-full h-48 rounded-lg border-2 border-gray-200 bg-gray-100 flex items-center justify-center overflow-hidden p-2">
+            <img
+              src={preview}
+              alt={`${label} Preview`}
+              className="max-w-full max-h-full w-auto h-auto object-contain"
+            />
           </div>
+
+          <button
+            onClick={onRemove}
+            className="absolute -top-2 -left-2 bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-full shadow-lg transition-colors z-10"
+            type="button"
+            aria-label="Remove image"
+          >
+            <X className="w-4 h-4" />
+          </button>
+
           <input
             id={id}
             type="file"
@@ -118,9 +117,6 @@ export const UploadComponent: React.FC<UploadComponentProps> = ({
             accept="image/*"
             onChange={onChange}
           />
-          <div className="absolute top-2 right-2 bg-green-500 text-white p-1 rounded-full">
-            <CheckCircle className="w-5 h-5" />
-          </div>
         </div>
       )}
     </div>
@@ -134,6 +130,7 @@ export const UploadComponent: React.FC<UploadComponentProps> = ({
         onChange={(e) =>
           setFrontImage(e.target.files ? e.target.files[0] : null)
         }
+        onRemove={() => setFrontImage(null)}
         id="front-upload"
         side="front"
       />
@@ -144,6 +141,7 @@ export const UploadComponent: React.FC<UploadComponentProps> = ({
         onChange={(e) =>
           setBackImage(e.target.files ? e.target.files[0] : null)
         }
+        onRemove={() => setBackImage(null)}
         id="back-upload"
         side="back"
       />
