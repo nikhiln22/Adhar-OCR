@@ -1,8 +1,9 @@
 export interface IAddAadharResponseDto {
-  dob: string;
   name: string;
-  address: string;
+  dob: string;
   aadharNumber: string;
+  gender: string;
+  address: string;
 }
 
 export interface IAddAadharRequestDto {
@@ -11,4 +12,3 @@ export interface IAddAadharRequestDto {
   address: string;
   aadharNumber: string;
 }
-

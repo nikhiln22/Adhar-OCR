@@ -7,4 +7,3 @@ export interface IAadharOcrService {
     data?: IAddAadharResponseDto;
   }>;
 }
-''

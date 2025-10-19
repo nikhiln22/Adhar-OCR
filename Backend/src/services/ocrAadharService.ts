@@ -1,6 +1,5 @@
 import {
   IAddAadharResponseDto,
-  IAddAadharRequestDto,
 } from "../interfaces/Dto/OcrService";
 import { IAadharOcrService } from "../interfaces/IocrService";
 import { IAadharOcrRepository } from "../interfaces/IocrRepository";
@@ -34,33 +33,27 @@ export class AadharOcrService implements IAadharOcrService {
       const frontImage = files[0] as Express.Multer.File;
       const backImage = files[1] as Express.Multer.File;
 
-      const frontData = await this._ocrExtractionService.extractDataFromImage(
-        frontImage
-      );
-      const backData = await this._ocrExtractionService.extractDataFromImage(
+      const extractedData = await this._ocrExtractionService.extractBothImages(
+        frontImage,
         backImage
       );
 
+      console.log("Extracted Aadhaar Data:", extractedData);
+
       if (
-        !frontData.name ||
-        !frontData.dob ||
-        !frontData.aadharNumber ||
-        !backData.address
+        !extractedData.name ||
+        !extractedData.dob ||
+        !extractedData.aadharNumber ||
+        !extractedData.address || 
+        !extractedData.gender
       ) {
         return {
           success: false,
-          message: "Name, DOB, Aadhaar number or address is missing",
+          message: "Could not extract all required fields from Aadhaar card",
         };
       }
 
-      const combinedData: IAddAadharRequestDto = {
-        name: frontData.name,
-        dob: frontData.dob,
-        address: backData.address,
-        aadharNumber: frontData.aadharNumber || backData.aadharNumber || "",
-      };
-
-      const saved = await this._aadharOcrRepository.addAadhar(combinedData);
+      const saved = await this._aadharOcrRepository.addAadhar(extractedData);
 
       if (!saved) {
         return {

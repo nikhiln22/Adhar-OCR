@@ -11,6 +11,10 @@ const aadharSchema = new Schema<IAdharModel>(
       type: String,
       required: true,
     },
+    gender: {
+      type: String,
+      required: true,
+    },
     address: {
       type: String,
       required: true,

@@ -29,7 +29,7 @@ export class App implements IApp {
   }
 
   private configureRoutes() {
-    this.app.use("/api/ocr", this.ocrRoutes.getRouter());
+    this.app.use("/api", this.ocrRoutes.getRouter());
   }
 
   public getServer(): HttpServer {
