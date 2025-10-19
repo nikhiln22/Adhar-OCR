@@ -42,7 +42,7 @@ export const AadhaarOCRPage: React.FC = () => {
             </div>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
-            Aadhaar Details Scanner
+            Aadhaar OCR System
           </h1>
         </div>
 
